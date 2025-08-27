@@ -1,7 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
-<p>Logged out!</p>
+<div class="row justify-content-center">
+  <div class="col-md-6 col-lg-4">
+    <div class="card shadow-sm">
+      <div class="card-body p-4">
+        <!-- Header -->
+        <div class="text-center mb-4">
+          <i class="fas fa-sign-out-alt fa-3x text-success mb-3"></i>
+          <h2 class="card-title">See You Later!</h2>
+          <p class="text-muted">You have been successfully logged out</p>
+        </div>
 
-<a href="{% url 'accounts:login'%}">Click here to login again.</a>
+        <!-- Success Message -->
+        <div class="alert alert-success text-center" role="alert">
+          <i class="fas fa-check-circle me-2"></i>
+          Logged out successfully!
+        </div>
+
+        <!-- Action Button -->
+        <div class="d-grid gap-2 mt-3">
+          <a href="{% url 'pilots:login' %}" class="btn btn-primary btn-lg">
+            <i class="fas fa-sign-in-alt me-2"></i>
+            Sign In Again
+          </a>
+        </div>
+
+        <!-- Additional Info -->
+        <div class="text-center mt-4">
+          <small class="text-muted">
+            Thanks for using Drone Racing Service!
+          </small>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
 {% endblock %}

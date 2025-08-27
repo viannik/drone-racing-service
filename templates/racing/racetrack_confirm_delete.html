@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Delete Race Track - {{ racetrack.name }}{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <div class="card shadow">
+        <div class="card-header bg-danger text-white">
+          <h4 class="mb-0">⚠️ Delete Race Track</h4>
+        </div>
+        <div class="card-body">
+          <h5>Are you sure you want to delete race track "{{ racetrack.name }}"?</h5>
+          <p class="text-muted">This action cannot be undone.</p>
+          
+          <form action="" method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-danger mr-2">
+              <i class="fas fa-trash"></i> Yes, Delete
+            </button>
+            <a onclick="window.history.back()" class="btn btn-secondary">
+              <i class="fas fa-arrow-left"></i> Cancel
+            </a>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

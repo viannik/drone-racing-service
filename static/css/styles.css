@@ -1,0 +1,27 @@
+
+body {
+    background-color: #f8f9fa;
+}
+
+.main-header {
+    background: linear-gradient(135deg, #007bff 0%, #0056b3 100%);
+    color: white;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.main-content {
+    background-color: white;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    margin-top: 20px;
+    padding: 30px;
+    min-height: calc(100vh - 200px);
+}
+
+.sidebar-wrapper {
+    padding-top: 20px;
+}
+
+.content-wrapper {
+    padding-left: 30px;
+}
