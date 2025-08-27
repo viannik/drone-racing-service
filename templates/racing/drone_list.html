@@ -1,0 +1,125 @@
+{% extends "base.html" %}
+
+{% block title %}Drone Fleet Management{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <!-- Header Card -->
+      <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">🚁 DRONE FLEET MANAGEMENT</h4>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Search and Action Bar -->
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <form method="get" class="mb-0">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">🔍</span>
+                  </div>
+                  {{ search_form.model_name }}
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="col-md-6 text-md-right mb-2">
+              <a href="{% url 'racing:drone-create' %}" class="btn btn-success">
+                <i class="fas fa-plus"></i> Add New Drone
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Drone List -->
+      {% if drone_list %}
+        {% for drone in drone_list %}
+          <div class="card shadow-sm mb-3">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md-8">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <h5 class="card-title mb-1 text-primary">
+                        🚁 <a href="{% url 'racing:drone-detail' drone.pk %}" class="text-primary text-decoration-none">{{ drone.model_name }}</a>
+                      </h5>
+                      <p class="text-muted mb-0">
+                        <strong>{{ drone.manufacturer.name }}</strong>
+                      </p>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <small class="text-muted">Speed</small>
+                          <p class="mb-0 font-weight-bold">⚡ {{ drone.max_speed }} km/h</p>
+                        </div>
+                        <div>
+                          <small class="text-muted">Weight</small>
+                          <p class="mb-0 font-weight-bold">⚖️ {{ drone.weight }}kg</p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <small class="text-muted">Pilots</small>
+                          <p class="mb-0 font-weight-bold">👥 {{ drone.pilots.count }}</p>
+                        </div>
+                        <div>
+                          {% if drone.pilots.count > 0 %}
+                            <span class="badge badge-warning">In Use</span>
+                          {% else %}
+                            <span class="badge badge-success">Available</span>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 text-right">
+                  <div class="btn-group" role="group">
+                    <a href="{% url 'racing:drone-update' drone.pk %}" class="btn btn-sm btn-outline-warning">
+                      <i class="fas fa-edit"></i> Edit
+                    </a>
+                    {% if user.is_authenticated %}
+                      <a href="{% url 'racing:toggle-drone-assign' drone.pk %}" class="btn btn-sm btn-outline-info">
+                        <i class="fas fa-users"></i> 
+                        {% if drone.pk in user_drone_ids %}
+                          Unassign
+                        {% else %}
+                          Assign
+                        {% endif %}
+                      </a>
+                    {% endif %}
+                    <a href="{% url 'racing:drone-delete' drone.pk %}" class="btn btn-sm btn-outline-danger">
+                      <i class="fas fa-trash"></i> Delete
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="card shadow-sm">
+          <div class="card-body text-center py-5">
+            <i class="fas fa-helicopter fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">No drones found</h5>
+            <p class="text-muted">Start building your fleet by adding your first drone.</p>
+            <a href="{% url 'racing:drone-create' %}" class="btn btn-success">
+              <i class="fas fa-plus"></i> Add New Drone
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

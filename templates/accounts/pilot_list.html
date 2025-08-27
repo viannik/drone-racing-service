@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Pilot Management{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <!-- Header Card -->
+      <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">👨‍✈️ PILOT MANAGEMENT</h4>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Search and Action Bar -->
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <form method="get" class="mb-0">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">🔍</span>
+                  </div>
+                  {{ search_form.username }}
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="col-md-6 text-md-right mb-2">
+              <a href="{% url 'pilots:pilot-create' %}" class="btn btn-success">
+                <i class="fas fa-plus"></i> Add New Pilot
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Pilot List -->
+      {% if pilot_list %}
+        {% for pilot in pilot_list %}
+          <div class="card shadow-sm mb-3">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md-7">
+                  <div class="row">
+                    <div class="col-md-4">
+                      <h5 class="card-title mb-1 text-primary">
+                        👨‍✈️ <a href="{% url 'pilots:pilot-detail' pilot.pk %}" class="text-primary text-decoration-none">{{ pilot.username }}</a>
+                      </h5>
+                      <p class="text-muted mb-0">
+                        <strong>License:</strong> {{ pilot.drone_license|default:"Not assigned" }}
+                      </p>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <small class="text-muted">Skill Rating</small>
+                          <p class="mb-0 font-weight-bold">⭐ {{ pilot.skill_rating }}/100</p>
+                        </div>
+                        <div>
+                          <small class="text-muted">Certified</small>
+                          <p class="mb-0 font-weight-bold">
+                            {% if pilot.certification_date %}
+                              📅 {{ pilot.certification_date|date:"M Y" }}
+                            {% else %}
+                              ❌ No
+                            {% endif %}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                    <div class="col-md-4">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div>
+                          <small class="text-muted">Drones</small>
+                          <p class="mb-0 font-weight-bold">🚁 {{ pilot.drones.count }}</p>
+                        </div>
+                        <div>
+                          {% if pilot.is_active %}
+                            <span class="badge badge-success">Active</span>
+                          {% else %}
+                            <span class="badge badge-secondary">Inactive</span>
+                          {% endif %}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-4 text-right">
+                  <div class="btn-group" role="group">
+                    <a href="{% url 'pilots:pilot-update' pilot.pk %}" class="btn btn-sm btn-outline-warning">
+                      <i class="fas fa-edit"></i> Edit
+                    </a>
+                    <a href="{% url 'pilots:pilot-delete' pilot.pk %}" class="btn btn-sm btn-outline-danger">
+                      <i class="fas fa-trash"></i> Delete
+                    </a>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="card shadow-sm">
+          <div class="card-body text-center py-5">
+            <i class="fas fa-user-astronaut fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">No pilots found</h5>
+            <p class="text-muted">Start building your pilot roster by adding your first pilot.</p>
+            <a href="{% url 'pilots:pilot-create' %}" class="btn btn-success">
+              <i class="fas fa-user-plus"></i> Add New Pilot
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}

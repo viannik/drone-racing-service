@@ -1,0 +1,171 @@
+{% extends "base.html" %}
+
+{% block title %}{{ racetrack.name }} - Race Track Profile{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <!-- Race Track Profile Card -->
+      <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h3 class="mb-0">
+              <i class="fas fa-flag-checkered mr-2"></i>
+              RACE TRACK: {{ racetrack.name|upper }}
+            </h3>
+            {% if racetrack.difficulty_level <= 2 %}
+              <span class="badge badge-success badge-pill px-3 py-2">
+                <i class="fas fa-circle mr-1"></i>{{ racetrack.get_difficulty_level_display|upper }}
+              </span>
+            {% elif racetrack.difficulty_level <= 3 %}
+              <span class="badge badge-warning badge-pill px-3 py-2">
+                <i class="fas fa-circle mr-1"></i>{{ racetrack.get_difficulty_level_display|upper }}
+              </span>
+            {% else %}
+              <span class="badge badge-danger badge-pill px-3 py-2">
+                <i class="fas fa-circle mr-1"></i>{{ racetrack.get_difficulty_level_display|upper }}
+              </span>
+            {% endif %}
+          </div>
+        </div>
+        <div class="card-body p-4">
+          <div class="row">
+            <!-- Track Name Card -->
+            <div class="col-md-6 mb-3">
+              <div class="card border-left-primary h-100">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="mr-3">
+                      <i class="fas fa-flag-checkered fa-2x text-primary"></i>
+                    </div>
+                    <div>
+                      <h6 class="text-primary mb-1">Track Name</h6>
+                      <h5 class="mb-0 font-weight-bold">{{ racetrack.name }}</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Location Card -->
+            <div class="col-md-6 mb-3">
+              <div class="card border-left-success h-100">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="mr-3">
+                      <i class="fas fa-map-marker-alt fa-2x text-success"></i>
+                    </div>
+                    <div>
+                      <h6 class="text-success mb-1">Location</h6>
+                      <h5 class="mb-0 font-weight-bold">{{ racetrack.location }}</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Difficulty Level Card -->
+            <div class="col-md-6 mb-3">
+              <div class="card border-left-info h-100">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="mr-3">
+                      <i class="fas fa-chart-line fa-2x text-info"></i>
+                    </div>
+                    <div>
+                      <h6 class="text-info mb-1">Difficulty Level</h6>
+                      <h5 class="mb-0 font-weight-bold">{{ racetrack.get_difficulty_level_display }} ({{ racetrack.difficulty_level }}/5)</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Track Length Card -->
+            <div class="col-md-6 mb-3">
+              <div class="card border-left-warning h-100">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="mr-3">
+                      <i class="fas fa-ruler fa-2x text-warning"></i>
+                    </div>
+                    <div>
+                      <h6 class="text-warning mb-1">Track Length</h6>
+                      <h5 class="mb-0 font-weight-bold">{{ racetrack.length_meters }} meters</h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            
+            <!-- Record Time Card -->
+            <div class="col-md-6 mb-3">
+              <div class="card border-left-danger h-100">
+                <div class="card-body">
+                  <div class="d-flex align-items-center">
+                    <div class="mr-3">
+                      <i class="fas fa-stopwatch fa-2x text-danger"></i>
+                    </div>
+                    <div>
+                      <h6 class="text-danger mb-1">Record Time</h6>
+                      <h5 class="mb-0 font-weight-bold">
+                        {% if racetrack.record_time %}
+                          {{ racetrack.record_time }}
+                        {% else %}
+                          No record set
+                        {% endif %}
+                      </h5>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      {% if user.is_authenticated %}
+        <div class="card shadow-sm">
+          <div class="card-body text-center">
+            <h5 class="card-title text-muted mb-3">Track Actions</h5>
+            <a href="{% url 'racing:racetrack-update' racetrack.pk %}" class="btn btn-warning mr-2">
+              <i class="fas fa-edit mr-1"></i>Edit Track
+            </a>
+            <a href="{% url 'racing:racetrack-delete' racetrack.pk %}" class="btn btn-outline-danger">
+              <i class="fas fa-trash mr-1"></i>Delete Track
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+
+<style>
+.card:hover {
+  transform: translateY(-2px);
+}
+
+.border-left-primary {
+  border-left: 4px solid #007bff !important;
+}
+
+.border-left-success {
+  border-left: 4px solid #28a745 !important;
+}
+
+.border-left-info {
+  border-left: 4px solid #17a2b8 !important;
+}
+
+.border-left-warning {
+  border-left: 4px solid #ffc107 !important;
+}
+
+.border-left-danger {
+  border-left: 4px solid #dc3545 !important;
+}
+</style>
+{% endblock %}

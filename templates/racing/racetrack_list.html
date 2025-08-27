@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Race Track Management{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-12">
+      <!-- Header Card -->
+      <div class="card shadow mb-4">
+        <div class="card-header bg-primary text-white">
+          <div class="d-flex justify-content-between align-items-center">
+            <h4 class="mb-0">🏁 RACE TRACK MANAGEMENT</h4>
+          </div>
+        </div>
+        <div class="card-body">
+          <!-- Search and Action Bar -->
+          <div class="row">
+            <div class="col-md-6 mb-2">
+              <form method="get" class="mb-0">
+                <div class="input-group">
+                  <div class="input-group-prepend">
+                    <span class="input-group-text">🔍</span>
+                  </div>
+                  {{ search_form.name }}
+                  <div class="input-group-append">
+                    <button class="btn btn-outline-primary" type="submit">Search</button>
+                  </div>
+                </div>
+              </form>
+            </div>
+            <div class="col-md-6 text-md-right mb-2">
+              <a href="{% url 'racing:racetrack-create' %}" class="btn btn-success">
+                <i class="fas fa-plus"></i> Add New Track
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Race Track List -->
+      {% if racetrack_list %}
+        {% for racetrack in racetrack_list %}
+          <div class="card shadow-sm mb-3">
+            <div class="card-body">
+              <div class="row align-items-center">
+                <div class="col-md-7">
+                  <div class="row">
+                    <div class="col-md-6">
+                      <h5 class="card-title mb-1 text-primary">
+                        🏁 <a href="{% url 'racing:racetrack-detail' racetrack.pk %}" class="text-primary text-decoration-none">{{ racetrack.name }}</a>
+                      </h5>
+                      <p class="text-muted mb-0">
+                        <strong>Location:</strong> {{ racetrack.location }}
+                      </p>
+                    </div>
+                    <div class="col-md-6">
+                      <div class="d-flex justify-content-between">
+                        <div>
+                          <small class="text-muted">Length</small>
+                          <p class="mb-0 font-weight-bold">📏 {{ racetrack.length_meters }}m</p>
+                        </div>
+                        <div>
+                          <small class="text-muted">Record Time</small>
+                          <p class="mb-0 font-weight-bold">
+                            {% if racetrack.record_time %}
+                              ⏱️ {{ racetrack.record_time }}
+                            {% else %}
+                              ❌ None
+                            {% endif %}
+                          </p>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="col-md-5 text-right">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div>
+                      {% if racetrack.difficulty_level == 1 %}
+                        <span class="badge badge-success">{{ racetrack.get_difficulty_level_display }}</span>
+                      {% elif racetrack.difficulty_level == 2 %}
+                        <span class="badge badge-info">{{ racetrack.get_difficulty_level_display }}</span>
+                      {% elif racetrack.difficulty_level == 3 %}
+                        <span class="badge badge-warning">{{ racetrack.get_difficulty_level_display }}</span>
+                      {% elif racetrack.difficulty_level == 4 %}
+                        <span class="badge badge-danger">{{ racetrack.get_difficulty_level_display }}</span>
+                      {% else %}
+                        <span class="badge badge-dark">{{ racetrack.get_difficulty_level_display }}</span>
+                      {% endif %}
+                    </div>
+                    <div class="btn-group" role="group">
+                      <a href="{% url 'racing:racetrack-update' racetrack.pk %}" class="btn btn-sm btn-outline-warning">
+                        <i class="fas fa-edit"></i> Edit
+                      </a>
+                      <a href="{% url 'racing:racetrack-delete' racetrack.pk %}" class="btn btn-sm btn-outline-danger">
+                        <i class="fas fa-trash"></i> Delete
+                      </a>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        {% endfor %}
+      {% else %}
+        <div class="card shadow-sm">
+          <div class="card-body text-center py-5">
+            <i class="fas fa-flag-checkered fa-3x text-muted mb-3"></i>
+            <h5 class="text-muted">No race tracks found</h5>
+            <p class="text-muted">Start building your track collection by adding your first race track.</p>
+            <a href="{% url 'racing:racetrack-create' %}" class="btn btn-success">
+              <i class="fas fa-plus"></i> Add New Track
+            </a>
+          </div>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</div>
+{% endblock %}
