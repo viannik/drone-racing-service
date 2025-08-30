@@ -36,3 +36,16 @@ drone-racing-service/
 - Difficulty levels: Beginner (1) to Professional (5)
 - Track length in meters
 - Optional record time tracking
+
+## Live Site
+
+The application is deployed and accessible at the following URL:
+
+- **URL:** [https://drone-racing-service.onrender.com/](https://drone-racing-service.onrender.com/)
+
+### Test Credentials
+
+You can use the following credentials to log in and test the application:
+
+- **Username:** `user`
+- **Password:** `user12345`
