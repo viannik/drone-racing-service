@@ -1,3 +1,6 @@
+from datetime import timedelta
+
+from django.core.validators import MinValueValidator
 from django.db import models
 from django.urls import reverse
 
@@ -25,11 +28,13 @@ class Drone(models.Model):
     )
     max_speed = models.FloatField(
         help_text="Max speed in km/h",
+        validators=[MinValueValidator(0.0)]
     )
     weight = models.DecimalField(
         max_digits=5,
         decimal_places=2,
         help_text="Weight in kg",
+        validators=[MinValueValidator(0.0)]
     )
     manufacturer = models.ForeignKey(
         Manufacturer,
@@ -81,9 +86,11 @@ class RaceTrack(models.Model):
         help_text="Race track location",
     )
     record_time = models.DurationField(
+        verbose_name="Record Time (HH:MM:SS)",
         null=True,
         blank=True,
-        help_text="Record time for the track",
+        help_text="Enter the record time in hours:minutes:seconds ",
+        validators=[MinValueValidator(timedelta(seconds=0))],
     )
 
     class Meta:
